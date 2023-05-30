@@ -257,6 +257,8 @@ boolean_number(WITH_SIMD)
 option(WITH_TURBOJPEG
   "Include the TurboJPEG API library and associated test programs" TRUE)
 boolean_number(WITH_TURBOJPEG)
+option(WITH_CDJPEG "Build cjpeg/djpeg extensions" TRUE)
+boolean_number(WITH_CDJPEG)
 option(WITH_FUZZ "Build fuzz targets" FALSE)
 
 macro(report_option var desc)
@@ -283,6 +285,7 @@ endif()
 
 report_option(ENABLE_SHARED "Shared libraries")
 report_option(ENABLE_STATIC "Static libraries")
+report_option(WITH_CDJPEG "Enable cjpeg/djpeg extensions")
 
 if(ENABLE_SHARED)
   set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR})
@@ -794,7 +797,7 @@ endif()
 set(CDJPEG_COMPILE_FLAGS
   "-DBMP_SUPPORTED -DGIF_SUPPORTED -DPPM_SUPPORTED -DTARGA_SUPPORTED ${USE_SETMODE}")
 
-if(ENABLE_STATIC)
+if(ENABLE_STATIC AND WITH_CDJPEG)
   # Compile a separate version of these source files with 12-bit and 16-bit
   # data precision.
   add_library(cjpeg12-static OBJECT src/rdppm.c)
